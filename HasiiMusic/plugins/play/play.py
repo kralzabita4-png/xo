@@ -459,7 +459,7 @@ async def play_command(
             return await mystic.edit_text(err)
 
         await mystic.delete()
-        return await play_logs(message, streamtype=log_label)
+        return await play_logs(message)
 
     else:
         if plist_type:
