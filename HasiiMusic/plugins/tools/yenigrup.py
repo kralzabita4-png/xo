@@ -3,7 +3,7 @@ from datetime import datetime
 from pyrogram import Client, filters
 from pyrogram.types import Message, ChatMemberUpdated
 from pyrogram.enums import ChatMemberStatus
-from config import LOG_GROUP_ID
+from config import LOGGER_ID
 from HasiiMusic import app
 
 
