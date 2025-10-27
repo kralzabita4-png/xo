@@ -24,3 +24,4 @@ tgcrypto
 unidecode
 #yt-dlp==2025.10.14
 yt-dlp==2025.10.22
+geocoder
