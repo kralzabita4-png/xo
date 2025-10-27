@@ -233,18 +233,31 @@ class Call:
             "old_second": db[chat_id][0].get("seconds"),
         })
 
-
+    # DÜZENLENEN KISIM BURASI
     @capture_internal_err
     async def stream_call(self, link: str) -> None:
         assistant = await group_assistant(self, config.LOGGER_ID)
         try:
             await assistant.play(config.LOGGER_ID, MediaStream(link))
             await asyncio.sleep(8)
+        except NoActiveGroupCall:
+            LOGGER(__name__).error(
+                f"Asistan, {config.LOGGER_ID} log kanalında oynatmaya çalıştı ancak aktif bir sesli sohbet yok."
+            )
+        except TelegramServerError:
+            LOGGER(__name__).error(
+                f"Asistan, {config.LOGGER_ID} log kanalına bağlanırken bir Telegram sunucu hatası aldı."
+            )
+        except Exception as e:
+            LOGGER(__name__).error(
+                f"Log kanalında ({config.LOGGER_ID}) stream_call sırasında bilinmeyen hata: {e}"
+            )
         finally:
             try:
                 await assistant.leave_call(config.LOGGER_ID)
             except:
                 pass
+    # DÜZENLEME BİTTİ
 
     @capture_internal_err
     async def join_call(
