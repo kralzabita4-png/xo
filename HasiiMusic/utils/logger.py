@@ -1,5 +1,3 @@
-import psutil, time
-from datetime import datetime
 from pyrogram.enums import ParseMode
 from HasiiMusic import app
 from HasiiMusic.utils.database import (
@@ -10,13 +8,9 @@ from HasiiMusic.utils.database import (
 )
 from config import LOG, LOGGER_ID
 
-# Bot başlangıç zamanı
-BOT_START_TIME = time.time()
-BOT_VERSION = "3.0.1 Premium"
-
 
 async def send_deluxe_log(message, event_type: str, extra_info: str = None):
-    """💎 HasiiMusic Deluxe Log Panel 3.0 - Sistem, Ping, Uptime, Versiyon dahil"""
+    """HasiiMusic Deluxe Log Panel — her eylem için ortak fonksiyon."""
     chat_id = message.chat.id
     uye_sayisi = await app.get_chat_members_count(chat_id)
     toplam_grup = len(await get_served_chats())
@@ -26,7 +20,7 @@ async def send_deluxe_log(message, event_type: str, extra_info: str = None):
     if not await is_on_off(LOG):
         return
 
-    # Grup linki
+    # Grup linki kontrolü
     if message.chat.username:
         chat_link = f"https://t.me/{message.chat.username}"
     else:
@@ -36,27 +30,12 @@ async def send_deluxe_log(message, event_type: str, extra_info: str = None):
         except Exception:
             chat_link = "🔒 Gizli Grup (Link alınamadı)"
 
-    # Kullanıcı adı kontrolü
+    # Kullanıcı kontrolü
     username = f"@{message.from_user.username}" if message.from_user.username else "🌸 Kullanıcı Adı Yok"
 
-    # Tarih
     tarih = message.date.strftime("%d.%m.%Y • %H:%M:%S")
 
-    # Sistem istatistikleri
-    cpu = psutil.cpu_percent(interval=0.5)
-    ram = psutil.virtual_memory().percent
-    disk = psutil.disk_usage("/").percent
-
-    # Uptime hesaplama
-    uptime_seconds = int(time.time() - BOT_START_TIME)
-    uptime_str = time.strftime("%H:%M:%S", time.gmtime(uptime_seconds))
-
-    # Ping ölçümü
-    start = time.time()
-    await app.get_me()
-    ping_ms = int((time.time() - start) * 1000)
-
-    # Deluxe HTML Log
+    # 🔥 Deluxe HTML log metni
     logger_text = f"""
 <pre>╔══════════════════════════════╗</pre>
 <b>💫 𝐇𝐀𝐒𝐈𝐈 𝐌𝐔𝐒𝐈𝐂 - 𝐋𝐎𝐆 𝐏𝐀𝐍𝐄𝐋 💫</b>
@@ -76,17 +55,6 @@ async def send_deluxe_log(message, event_type: str, extra_info: str = None):
 🌍 <b>Toplam Grup:</b> <code>{toplam_grup}</code>  
 🎙 <b>Aktif Sesli Sohbet:</b> <code>{aktif_sesli}</code>  
 📹 <b>Aktif Video Sohbet:</b> <code>{aktif_video}</code>  
-
-<pre>──────────────────────────────</pre>
-🧠 <b>Sistem Kaynakları</b>  
-⚙️ <b>CPU:</b> <code>{cpu}%</code>  
-💾 <b>RAM:</b> <code>{ram}%</code>  
-💽 <b>Disk:</b> <code>{disk}%</code>  
-
-<pre>──────────────────────────────</pre>
-⏱ <b>Uptime:</b> <code>{uptime_str}</code>  
-📶 <b>Ping:</b> <code>{ping_ms} ms</code>  
-🧩 <b>Versiyon:</b> <code>{BOT_VERSION}</code>
 
 <pre>──────────────────────────────</pre>
 🕒 <b>Kayıt Alındı:</b> <code>{tarih}</code>  
