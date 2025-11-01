@@ -52,25 +52,6 @@ def _get_bottom_buttons(_, close_callback_data: str) -> List[InlineKeyboardButto
 
 # --- Ana Buton Fonksiyonları (Markup Functions) ---
 
-def stream_markup_timer(_, chat_id: int, played: str, dur: str) -> Optional[List[List[InlineKeyboardButton]]]:
-    """Zamanlayıcıyı ve ilerleme çubuğunu gösteren butonu oluşturur."""
-    if not should_update_progress(chat_id):
-        return None  # Güncelleme gerekmiyorsa hiçbir şey döndürme
-
-    played_sec = time_to_seconds(played)
-    duration_sec = time_to_seconds(dur)
-
-    if duration_sec > 0:
-        bar = generate_progress_bar(played_sec, duration_sec)
-        progress_text = f"{played} {bar} {dur}"
-    else:
-        # Süre bilinmiyorsa veya canlı yayınsa
-        progress_text = f"{played} / ◉ CANLI"
-
-    return [
-        [InlineKeyboardButton(text=progress_text, callback_data="GetTimer")],
-        [InlineKeyboardButton(text=CHANNEL_TEXT, url=CHANNEL_URL)],
-    ]
 
 
 def stream_markup(_, chat_id: int) -> List[List[InlineKeyboardButton]]:
