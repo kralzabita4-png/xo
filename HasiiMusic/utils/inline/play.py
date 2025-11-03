@@ -6,7 +6,7 @@ from HasiiMusic.utils.formatters import time_to_seconds
 # --- Sabitler (Constants) ---
 
 # Kanal Butonu
-CHANNEL_TEXT = "💙 𝐊𝐚𝐧𝐚𝐥"
+CHANNEL_TEXT = "https://t.me/prenses_muzik_duyuru"
 CHANNEL_URL = "https://t.me/prenses_muzik_duyuru"
 
 # İlerleme Çubuğu Ayarları
