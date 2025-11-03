@@ -42,5 +42,5 @@ HELP_4 = """
 • /gban [kullanıcı] — Kullanıcıyı tüm gruplarda engeller.  
 • /ungban [kullanıcı] — Global yasağı kaldırır.  
 • /logs — Günlük kayıtlarını gösterir.  
-• /maviduyuru — En son mavi ekip duyurularını gösterir 💙
+• /prensesduyuru — En son mavi ekip duyurularını gösterir 💙
 """
