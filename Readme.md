@@ -1,4 +1,4 @@
-https://heroku.com/deploy?template=https://github.com/askimyavas7-tech/xo
+
 <p align="center">
   <a href="https://t.me/musicxhasii">
     <img src="https://files.catbox.moe/und0yt.jpg" width="600">
