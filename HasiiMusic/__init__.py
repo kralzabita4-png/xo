@@ -3,7 +3,7 @@ from HasiiMusic.core.dir import dirr
 from HasiiMusic.core.git import git
 from HasiiMusic.core.userbot import Userbot
 from HasiiMusic.misc import dbb, heroku
-from HasiiMusic.logging import LOGGER
+from HasiiMusic.core.logger import LOGGER  # ✅ BURASI DÜZELTİLDİ
 
 dirr()
 git()
@@ -12,7 +12,6 @@ heroku()
 
 app = JARVIS()
 userbot = Userbot()
-
 
 from .platforms import *
 
