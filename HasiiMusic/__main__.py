@@ -17,14 +17,14 @@ from config import BANNED_USERS
 
 async def init():
     if not any([config.STRING1, config.STRING2, config.STRING3, config.STRING4, config.STRING5]):
-        LOGGER("Tune").error("Assistant session bulunamadı. Lütfen SESSION ekle!")
+        LOGGER.error("Assistant session bulunamadı. Lütfen SESSION ekle!")
         exit()
 
     try:
         await fetch_and_store_cookies()
-        LOGGER("Tune").info("YouTube Cookies başarıyla yüklendi ✅")
+        LOGGER.info("YouTube Cookies başarıyla yüklendi ✅")
     except Exception as e:
-        LOGGER("Tune").warning(f"Cookie Hatası: {e}")
+        LOGGER.warning(f"Cookie Hatası: {e}")
 
     await sudo()
 
@@ -36,41 +36,38 @@ async def init():
             BANNED_USERS.add(user_id)
 
     except Exception as e:
-        LOGGER("Tune").warning(f"Banlı kullanıcı listesi yüklenemedi: {e}")
+        LOGGER.warning(f"Banlı kullanıcı listesi yüklenemedi: {e}")
 
-    # Uygulamayı başlat
     await app.start()
 
-    # Tüm pluginleri yükle
-    for module in ALL_MODULES:
-        importlib.import_module("HasiiMusic.plugins." + module)
-
-    LOGGER("Tune").info("Tüm plugin modülleri yüklendi ✅")
+    if ALL_MODULES:
+        for module in ALL_MODULES:
+            importlib.import_module(f"HasiiMusic.plugins.{module}")
+        LOGGER.info("Tüm plugin modülleri yüklendi ✅")
+    else:
+        LOGGER.warning("ALL_MODULES listesi boş, plugin yüklenmedi!")
 
     await userbot.start()
     await JARVIS.start()
 
     try:
-        # Örnek stream
         await JARVIS.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
-        LOGGER("Tune").error("Log grubunda sesli sohbet açık değil! Aç ve botu yeniden başlat.")
+        LOGGER.error("Log grubunda sesli sohbet açık değil! Aç ve botu yeniden başlat.")
         exit()
     except Exception:
         pass
 
     await JARVIS.decorators()
 
-    LOGGER("Tune").info("Tune Music Bot Başarıyla Aktif 🎧")
+    LOGGER.info("Tune Music Bot Başarıyla Aktif 🎧")
 
-    # Bot idle durumda beklesin
     await idle()
 
-    # Bot durduruluyor
     await app.stop()
     await userbot.stop()
 
-    LOGGER("Tune").info("Bot durduruldu 👋")
+    LOGGER.info("Bot durduruldu 👋")
 
 
 if __name__ == "__main__":
