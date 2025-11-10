@@ -5,7 +5,8 @@ from pyrogram import idle
 from pytgcalls.exceptions import NoActiveGroupCall
 
 import config
-from HasiiMusic import LOGGER, app, userbot
+from HasiiMusic.logging import LOGGER
+from HasiiMusic import app, userbot
 from HasiiMusic.core.call import JARVIS
 from HasiiMusic.misc import sudo
 from HasiiMusic.plugins import ALL_MODULES
@@ -37,8 +38,10 @@ async def init():
     except Exception as e:
         LOGGER("Tune").warning(f"Banlı kullanıcı listesi yüklenemedi: {e}")
 
+    # Uygulamayı başlat
     await app.start()
 
+    # Tüm pluginleri yükle
     for module in ALL_MODULES:
         importlib.import_module("HasiiMusic.plugins." + module)
 
@@ -48,18 +51,22 @@ async def init():
     await JARVIS.start()
 
     try:
+        # Örnek stream
         await JARVIS.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
         LOGGER("Tune").error("Log grubunda sesli sohbet açık değil! Aç ve botu yeniden başlat.")
         exit()
-    except:
+    except Exception:
         pass
 
     await JARVIS.decorators()
+
     LOGGER("Tune").info("Tune Music Bot Başarıyla Aktif 🎧")
 
+    # Bot idle durumda beklesin
     await idle()
 
+    # Bot durduruluyor
     await app.stop()
     await userbot.stop()
 
