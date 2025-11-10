@@ -10,7 +10,7 @@ from HasiiMusic.core.call import JARVIS
 from HasiiMusic.misc import sudo
 from HasiiMusic.plugins import ALL_MODULES
 from HasiiMusic.utils.database import get_banned_users, get_gbanned
-from HasiiMusic.utils.cookie_handler import fetch_and_store_cookies 
+from HasiiMusic.utils.cookie_handler import fetch_and_store_cookies
 from config import BANNED_USERS
 
 
@@ -22,14 +22,14 @@ async def init():
         and not config.STRING4
         and not config.STRING5
     ):
-        LOGGER(__name__).error("ᴀssɪsᴛᴀɴᴛ sᴇssɪᴏɴ ɴᴏᴛ ғɪʟʟᴇᴅ, ᴘʟᴇᴀsᴇ ғɪʟʟ ᴀ ᴘʏʀᴏɢʀᴀᴍ sᴇssɪᴏɴ...")
+        LOGGER.error("Assistant session bulunamadı. Lütfen session string ekle!")
         exit()
 
     try:
         await fetch_and_store_cookies()
-        LOGGER("Tune").info("ʏᴏᴜᴛᴜʙᴇ ᴄᴏᴏᴋɪᴇs ʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ✅")
+        LOGGER.info("YouTube Cookies başarıyla yüklendi ✅")
     except Exception as e:
-        LOGGER("Tune").warning(f"⚠️ᴄᴏᴏᴋɪᴇ ᴇʀʀᴏʀ: {e}")
+        LOGGER.warning(f"Cookie Hatası: {e}")
 
     await sudo()
 
@@ -37,39 +37,41 @@ async def init():
         users = await get_gbanned()
         for user_id in users:
             BANNED_USERS.add(user_id)
+
         users = await get_banned_users()
         for user_id in users:
             BANNED_USERS.add(user_id)
+
     except Exception as e:
-        LOGGER("Tune").warning(f"ғᴀɪʟᴇᴅ ᴛᴏ ʟᴏᴀᴅ ʙᴀɴɴᴇᴅ ᴜsᴇʀs: {e}")
+        LOGGER.warning(f"Banlı kullanıcılar yüklenemedi: {e}")
 
     await app.start()
 
     for all_module in ALL_MODULES:
-        importlib.import_module("HasiiMusic.plugins" + all_module)
+        importlib.import_module("HasiiMusic.plugins." + all_module)
 
-    LOGGER("HasiiMusic.plugins").info("ᴛᴜɴᴇ's ᴍᴏᴅᴜʟᴇs ʟᴏᴀᴅᴇᴅ...")
+    LOGGER.info("Bütün Plugin Modülleri Başarıyla Yüklendi ✅")
+
     await userbot.start()
     await JARVIS.start()
 
     try:
         await JARVIS.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
-        LOGGER("Tune").error(
-            "ᴘʟᴇᴀsᴇ ᴛᴜʀɴ ᴏɴ ᴛʜᴇ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ᴏғ ʏᴏᴜʀ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ.\n\nᴀɴɴɪᴇ ʙᴏᴛ sᴛᴏᴘᴘᴇᴅ..."
-        )
+        LOGGER.error("Lütfen log grubunun sesli sohbetini açıp botu tekrar başlatın!")
         exit()
     except:
         pass
 
     await JARVIS.decorators()
-    LOGGER("Tune").info(
-        "\x54\x75\x6e\x65\x20\x56\x69\x61\x20\x4d\x75\x73\x69\x63\x20\x42\x6f\x74\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e"
-    )
+
+    LOGGER.info("Tune Music Bot Başarıyla Başlatıldı ✅")
     await idle()
+
     await app.stop()
     await userbot.stop()
-    LOGGER("Tune").info("sᴛᴏᴘᴘɪɴɢ ᴛᴜɴᴇ ᴠɪᴀ ᴍᴜsɪᴄ ʙᴏᴛ ...")
+
+    LOGGER.info("Bot Durduruldu. Görüşmek üzere 👋")
 
 
 if __name__ == "__main__":
