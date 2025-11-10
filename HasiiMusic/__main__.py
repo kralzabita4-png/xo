@@ -15,42 +15,34 @@ from config import BANNED_USERS
 
 
 async def init():
-    if (
-        not config.STRING1
-        and not config.STRING2
-        and not config.STRING3
-        and not config.STRING4
-        and not config.STRING5
-    ):
-        LOGGER.error("Assistant session bulunamadı. Lütfen session string ekle!")
+    if not any([config.STRING1, config.STRING2, config.STRING3, config.STRING4, config.STRING5]):
+        LOGGER("Tune").error("Assistant session bulunamadı. Lütfen SESSION ekle!")
         exit()
 
     try:
         await fetch_and_store_cookies()
-        LOGGER.info("YouTube Cookies başarıyla yüklendi ✅")
+        LOGGER("Tune").info("YouTube Cookies başarıyla yüklendi ✅")
     except Exception as e:
-        LOGGER.warning(f"Cookie Hatası: {e}")
+        LOGGER("Tune").warning(f"Cookie Hatası: {e}")
 
     await sudo()
 
     try:
-        users = await get_gbanned()
-        for user_id in users:
+        for user_id in await get_gbanned():
             BANNED_USERS.add(user_id)
 
-        users = await get_banned_users()
-        for user_id in users:
+        for user_id in await get_banned_users():
             BANNED_USERS.add(user_id)
 
     except Exception as e:
-        LOGGER.warning(f"Banlı kullanıcılar yüklenemedi: {e}")
+        LOGGER("Tune").warning(f"Banlı kullanıcı listesi yüklenemedi: {e}")
 
     await app.start()
 
-    for all_module in ALL_MODULES:
-        importlib.import_module("HasiiMusic.plugins." + all_module)
+    for module in ALL_MODULES:
+        importlib.import_module("HasiiMusic.plugins." + module)
 
-    LOGGER.info("Bütün Plugin Modülleri Başarıyla Yüklendi ✅")
+    LOGGER("Tune").info("Tüm plugin modülleri yüklendi ✅")
 
     await userbot.start()
     await JARVIS.start()
@@ -58,20 +50,20 @@ async def init():
     try:
         await JARVIS.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
     except NoActiveGroupCall:
-        LOGGER.error("Lütfen log grubunun sesli sohbetini açıp botu tekrar başlatın!")
+        LOGGER("Tune").error("Log grubunda sesli sohbet açık değil! Aç ve botu yeniden başlat.")
         exit()
     except:
         pass
 
     await JARVIS.decorators()
+    LOGGER("Tune").info("Tune Music Bot Başarıyla Aktif 🎧")
 
-    LOGGER.info("Tune Music Bot Başarıyla Başlatıldı ✅")
     await idle()
 
     await app.stop()
     await userbot.stop()
 
-    LOGGER.info("Bot Durduruldu. Görüşmek üzere 👋")
+    LOGGER("Tune").info("Bot durduruldu 👋")
 
 
 if __name__ == "__main__":
