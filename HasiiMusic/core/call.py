@@ -6,7 +6,6 @@ import config  # API_ID, API_HASH, STRING1..5
 
 class Call:
     def __init__(self):
-        # Userbot ve PyTgCalls istemcilerini hazırla
         self.userbot1 = Client("HasiiXAssis1", config.API_ID, config.API_HASH, session_string=config.STRING1) if config.STRING1 else None
         self.one = PyTgCalls(self.userbot1) if self.userbot1 else None
 
@@ -24,9 +23,9 @@ class Call:
 
         self.active_calls: set[int] = set()
 
-    # -------------------- START METODU --------------------
     async def start(self):
-        LOGGER(__name__).info("PyTgCalls İstemcileri Başlatılıyor...")
+        LOGGER.info("PyTgCalls İstemcileri Başlatılıyor...")
+
         if self.userbot1:
             await self.userbot1.start()
             await self.one.start()
@@ -42,17 +41,14 @@ class Call:
         if self.userbot5:
             await self.userbot5.start()
             await self.five.start()
-        LOGGER(__name__).info("Tüm Userbot ve PyTgCalls istemcileri başlatıldı.")
 
-    # -------------------- DECORATORS METODU --------------------
+        LOGGER.info("Tüm Userbot ve PyTgCalls istemcileri başlatıldı.")
+
     async def decorators(self):
-        # Eski kodlar bunu çağırıyor, boş metod olarak bırakıyoruz
-        LOGGER(__name__).info("Call.decorators() çalıştırıldı. (Boş metod)")
+        LOGGER.info("Call.decorators() çalıştırıldı. (Boş metod)")
 
-# -------------------- JARVIS NESNESİ --------------------
 JARVIS = Call()
 
-# -------------------- BOTU BAŞLAT --------------------
 async def init():
     await JARVIS.start()
     await JARVIS.decorators()
