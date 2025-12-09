@@ -13,4 +13,4 @@ def dirr():
     os.makedirs(DOWNLOAD_DIR, exist_ok=True)
     os.makedirs(CACHE_DIR, exist_ok=True)
 
-    LOGGER(__name__).info("Directories Updated.")
+    LOGGER.info("Directories Updated ✅")
