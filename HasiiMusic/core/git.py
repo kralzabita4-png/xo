@@ -25,6 +25,6 @@ def install_req(cmd: str) -> Tuple[str, str, int, int]:
 
 
 def git():
-    # Auto-update devre dışı bırakıldı (Heroku uyumlu versiyon).
-    LOGGER(__name__).info("Auto-update pasif. (Heroku uyumlu mod)")
+    # Auto-update devre dışı (Heroku uyumlu)
+    LOGGER.info("Auto-update pasif. (Heroku uyumlu mod)")
     return
